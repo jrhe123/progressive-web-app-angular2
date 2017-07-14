@@ -8,11 +8,11 @@ import { AngularFireModule } from 'angularfire2';
 
 // Must export the config
 export const firebaseConfig = {
-  apiKey: '',
-  authDomain: '',
-  databaseURL: '',
-  storageBucket: '',
-  messagingSenderId: ''
+  apiKey: 'AIzaSyCf6ltVzGyCa1BetoucRD1BDO6fjE0LmkY',
+  authDomain: 'notification-85523.firebaseapp.com',
+  databaseURL: 'https://notification-85523.firebaseio.com',
+  storageBucket: 'notification-85523.appspot.com',
+  messagingSenderId: '721439807437'
 };
 
 

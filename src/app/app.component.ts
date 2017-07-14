@@ -1,44 +1,45 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
+import { AngularFireModule } from 'angularfire2';
 import { AngularFire, AuthProviders, AuthMethods,FirebaseListObservable } from 'angularfire2';
+import { FirebaseApp } from "angularfire2";
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
-  items: FirebaseListObservable<any>;
-  name: any;
-  msgVal: string = '';
 
-  constructor(public af: AngularFire) {
-    this.items = af.database.list('/messages', {
-      query: {
-        limitToLast: 5
-      }
-    });
+export class AppComponent{
 
-    this.af.auth.subscribe(auth => {
-      if(auth) {
-        this.name = auth;
-      }
-    });
-  }
+  constructor(){
+    var config = {
+      apiKey: "AIzaSyCf6ltVzGyCa1BetoucRD1BDO6fjE0LmkY",
+      authDomain: "notification-85523.firebaseapp.com",
+      databaseURL: "https://notification-85523.firebaseio.com",
+      projectId: "notification-85523",
+      storageBucket: "notification-85523.appspot.com",
+      messagingSenderId: "721439807437"
+    };
+    firebase.initializeApp(config);
 
-  login() {
-    this.af.auth.login({
-      provider: AuthProviders.Facebook,
-      method: AuthMethods.Popup
+    let messaging = firebase.messaging();
+    messaging.requestPermission()
+    .then(function(){
+      console.log("have permission");
+      return messaging.getToken();
     })
-  }
+    .then(function(token){
+      console.log(token);
+    })
+    .catch(function(err){
+      console.log("error");
+    })
 
-  logout() {
-     this.af.auth.logout();
-  }
-
-  chatSend(theirMessage: string) {
-    this.items.push({ message: theirMessage, name: this.name.facebook.displayName});
-    this.msgVal = '';
+    messaging.onMessage(function(payload){
+      console.log('on message: ', payload);
+    });
   }
 
 }
